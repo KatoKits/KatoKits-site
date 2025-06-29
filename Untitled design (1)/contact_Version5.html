@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact & Newsletter | KatoKits</title>
+  <meta name="description" content="Get in touch with KatoKits or subscribe to our newsletter for the latest preschool activity ideas.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo" style="font-family:'Pacifico',cursive; font-size:2rem;">
+      KatoKits
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="lesson-plans.html">Lesson Plans</a>
+      <a href="contact.html" class="btn btn-alt">Contact</a>
+    </nav>
+  </header>
+  <main class="section" style="max-width:600px; margin:auto;">
+    <h1>Contact Us</h1>
+    <p style="text-align:center;">Questions? Collaborations? Want preschool activity tips or to chat about early learning?<br>We're happy to help!</p>
+    <form id="contactForm" action="mailto:katokits@gmail.com" method="post" enctype="text/plain" style="display:flex;flex-direction:column;gap:1rem;margin:2rem auto;max-width:420px;">
+      <label>Name:<input type="text" name="name" required></label>
+      <label>Email:<input type="email" name="email" required></label>
+      <label>Message:<textarea name="message" rows="5"></textarea></label>
+      <button type="submit" class="btn">Send Pre-writing Tips</button>
+    </form>
+    <section class="section" style="max-width:500px; margin:2rem auto 0 auto; text-align:center; background:#fff4e0; border-radius:1rem; padding:2rem;">
+      <h2 style="margin-top:0;">Subscribe to our Newsletter</h2>
+      <p>Get the latest preschool activity ideas and free resources delivered to your inbox. No spam—just inspiration!</p>
+      <form id="newsletter" action="https://yourmailservice.com/subscribe" method="post" style="display:flex; flex-direction:column; gap:0.8rem; align-items:center;">
+        <label style="width:100%;">Email:<input type="email" name="email" required style="width:100%;max-width:260px;"></label>
+        <button type="submit" class="btn" style="width:100%;">Subscribe</button>
+      </form>
+    </section>
+  </main>
+  <footer>© 2025 KatoKits</footer>
+</body>
+</html>

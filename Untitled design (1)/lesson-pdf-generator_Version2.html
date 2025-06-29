@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>KatoKits Lesson Plan PDF Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .page-bg { width: 960px; height: 768px; position: relative; margin: 1rem auto; }
+    .overlay { position: absolute; font-family: Nunito, Arial, sans-serif; color: #222; font-size: 1.05rem; }
+    /* Positioning for image 4 (page 1) */
+    "C:\Users\kkota\Desktop\KatoKits\KatoKits Activity Lesson Plans & Developmental Checklist for Early Childhood Education Comprehensive Lesson Plans Thoughtfully designed activity plansd that promote early childhood development in\2.png"
+    .desc { left:45px; top:90px; width:540px; height:130px; }
+    .theme { left:650px; top:90px; width:230px; height:28px;}
+    .domain { left:650px; top:134px; width:230px; height:28px;}
+    .age { left:650px; top:178px; width:230px; height:40px;}
+    .objectives { left:45px; top:245px; width:220px; height:95px;}
+    .materials { left:45px; top:355px; width:220px; height:65px;}
+    .strategies { left:285px; top:245px; width:595px; height:175px;}
+    /* Page 2 */
+    .steps { left:45px; top:40px; width:860px; height:200px;}
+    .independent { left:45px; top:265px; width:250px; height:200px;}
+    .demo { left:320px; top:265px; width:580px; height:90px;}
+    .reflection { left:320px; top:370px; width:270px; height:90px;}
+    .prompt { left:610px; top:370px; width:290px; height:90px;}
+    /* Page 3 */
+    .checklist { left:55px; top:75px; width:460px; height:470px;}
+    .notes { left:540px; top:175px; width:325px; height:210px;}
+    /* Responsive for demo only */
+    @media (max-width:1000px){
+      .page-bg { width: 100vw; height: 80vw; max-width:960px; max-height:768px;}
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Create Lesson PDF</h1>
+  <!-- Demo input fields -->
+  <form id="lessonForm" style="max-width:700px;margin:auto;">
+    <h2>Lesson Info</h2>
+    <input name="theme" placeholder="Theme" required>
+    <input name="domain" placeholder="Domain" required>
+    <input name="age" placeholder="Age Group" required>
+    <textarea name="desc" placeholder="Activity Description" required></textarea>
+    <textarea name="objectives" placeholder="Learning Objectives" required></textarea>
+    <textarea name="materials" placeholder="Materials Needed" required></textarea>
+    <textarea name="strategies" placeholder="Teaching Strategies" required></textarea>
+    <textarea name="steps" placeholder="Step-by-Step Instructions" required></textarea>
+    <textarea name="independent" placeholder="Independent Exploration"></textarea>
+    <textarea name="demo" placeholder="Demonstration (How to Model)"></textarea>
+    <textarea name="reflection" placeholder="Reflection & Sharing"></textarea>
+    <textarea name="prompt" placeholder="Prompt Questions"></textarea>
+    <textarea name="checklist" placeholder="Developmental Checklist"></textarea>
+    <textarea name="notes" placeholder="Observation Notes"></textarea>
+    <button type="submit" class="btn">Preview & Download PDF</button>
+  </form>
+
+  <div id="preview" style="margin-top:2rem;"></div>
+  <div style="text-align:center;">
+    <button id="downloadPDF" class="btn" style="display:none;">Download PDF</button>
+  </div>
+
+  <!-- Use your images! -->
+  <img id="img4" src="image4.png" style="display:none;">
+  <img id="img1" src="image1.png" style="display:none;">
+  <img id="img2" src="image2.png" style="display:none;">
+  <img id="img3" src="image3.png" style="display:none;">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // Render overlays for preview
+    function makePage(imageId, overlays) {
+      const div = document.createElement('div');
+      div.className = 'page-bg';
+      div.style.background = "#fff";
+      div.style.backgroundImage = `url(${document.getElementById(imageId).src})`;
+      div.style.backgroundSize = "cover";
+      div.style.backgroundPosition = "center";
+      div.style.position = "relative";
+      overlays.forEach(ov => {
+        const el = document.createElement('div');
+        el.className = "overlay " + ov.cls;
+        el.textContent = ov.text || '';
+        el.style.whiteSpace = 'pre-wrap';
+        el.style.overflow = 'hidden';
+        div.appendChild(el);
+      });
+      return div;
+    }
+
+    // Form handling
+    const form = document.getElementById('lessonForm');
+    let lastPages = [];
+    form.onsubmit = function(e){
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(form).entries());
+      // For demo, split checklists and notes into lines
+      const checklist = (d.checklist||'').split('\n').map(s=>"- "+s).join('\n');
+      const notes = (d.notes||'').split('\n').join('\n');
+
+      // Page 1 (image4.png)
+      const page1 = makePage('img4', [
+        {cls:'desc', text:d.desc},
+        {cls:'theme', text:d.theme},
+        {cls:'domain', text:d.domain},
+        {cls:'age', text:d.age},
+        {cls:'objectives', text:d.objectives},
+        {cls:'materials', text:d.materials},
+        {cls:'strategies', text:d.strategies},
+      ]);
+      // Page 2 (image1.png)
+      const page2 = makePage('img1', [
+        {cls:'steps', text:d.steps},
+        {cls:'independent', text:d.independent},
+        {cls:'demo', text:d.demo},
+        {cls:'reflection', text:d.reflection},
+        {cls:'prompt', text:d.prompt}
+      ]);
+      // Page 3 (image2.png)
+      const page3 = makePage('img2', [
+        {cls:'checklist', text:checklist},
+        {cls:'notes', text:notes}
+      ]);
+      // Page 4 (image3.png)
+      const page4 = makePage('img3', []);
+      // Show
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+      [page3, page1, page2, page4].forEach(p=>preview.appendChild(p));
+      lastPages = [page3, page1, page2, page4];
+      document.getElementById('downloadPDF').style.display = '';
+    };
+
+    // Download PDF
+    document.getElementById('downloadPDF').onclick = async function(){
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({unit:'px', format:[960,768]});
+      for(let i=0;i<lastPages.length;i++){
+        const canvas = await html2canvas(lastPages[i], {backgroundColor: "#fff"});
+        const imgData = canvas.toDataURL("image/png");
+        if(i>0) pdf.addPage([960,768],'p');
+        pdf.addImage(imgData, 'PNG', 0, 0, 960, 768);
+      }
+      pdf.save('katokits-lesson-plan.pdf');
+    };
+  </script>
+</body>
+</html>
